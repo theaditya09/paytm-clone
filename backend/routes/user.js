@@ -1,11 +1,77 @@
 const {Router} = require('express')
 const router = Router()
+const {signUpBody, signInBody} = require('../types')
+const {Users} = require('../database/index')
+const jwt = require('jsonwebtoken')
+require('dotenv').config();
+const secret = process.env.JWT_SECRET
 
-router.post('/signup', (req, res) => {
+router.post('/signup', async (req, res) => {
+    const {success} = signUpBody.safeParse(req.body);
+    if(!success){
+        return res.status(411).json({
+            msg : "Invalid inputs. Please try again."
+        })
+    }
+
+    const existingUser = await Users.findOne({
+        username : req.body.username
+    })
+
+    if(existingUser){
+        return res.status(411).json({
+            msg : "User already exists / username taken"
+        })
+    }
+
+    const user = await Users.create({
+        username : req.body.username,
+        password : req.body.password,
+        firstName : req.body.firstName,
+        lastName : req.body.lastName
+    })
+    
+    const userId = user._id;
+    const token = jwt.sign({
+        userId
+    }, secret);
+
+    res.status(200).json({
+        msg : "User created succesfully",
+        token : token
+    })
 
 })
 
-router.post('/signin', (req, res) => {
+router.post('/signin', async (req, res) => {
+
+    const {success} = signInBody.safeParse(req.body)
+
+    if(!success){
+        return res.status(411).json({
+            msg : "Incorrect inputs"
+        })
+    }
+    
+    const userExists = await Users.findOne({
+        username : req.body.username,
+        password : req.body.password
+    })
+
+    if(userExists){
+        const userId = userExists._id
+        const token = jwt.sign({
+            userId
+        }, secret)
+        res.status(200).json({
+            token : token
+        })
+    }
+    else{
+        res.status(411).json({
+            msg : "Invalid Credentials."
+        })
+    }
 
 })
 
