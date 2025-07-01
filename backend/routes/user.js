@@ -1,11 +1,11 @@
 const {Router} = require('express')
 const router = Router()
 const {signUpBody, signInBody, updateBody} = require('../types')
-const {Users} = require('../database/index')
+const {Users, Accounts} = require('../database/index')
 const jwt = require('jsonwebtoken')
+const {authMiddleware} = require('../middlewares/middleware')
 require('dotenv').config();
 const secret = process.env.JWT_SECRET
-const {authMiddleware} = require('../middlewares/middleware')
 
 router.post('/signup', async (req, res) => {
     const {success} = signUpBody.safeParse(req.body);
@@ -31,11 +31,18 @@ router.post('/signup', async (req, res) => {
         firstName : req.body.firstName,
         lastName : req.body.lastName
     })
-    
     const userId = user._id;
+
+    await Accounts.create({
+        userId,
+        balance: 1 + Math.random() * 10000
+    })
+
     const token = jwt.sign({
         userId
     }, secret);
+
+
 
     res.status(200).json({
         msg : "User created succesfully",
