@@ -1,4 +1,5 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 const app = express()
 const rootRouter = require('./routes/index')
 require('dotenv').config()

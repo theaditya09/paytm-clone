@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 require('dotenv').config();
+console.log("MONGO_URI:", process.env.MONGO_URI);
 const mongoURI = process.env.MONGO_URI;
 
 mongoose.connect(mongoURI)
@@ -33,7 +34,21 @@ const userSchema = new mongoose.Schema({
     }
 });
 
+const accountSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId, // Reference to User model
+        ref: 'User',
+        required: true
+    },
+    balance: {
+        type: Number,
+        required: true
+    }
+});
+
 const Users = mongoose.model('Users',userSchema);
+const Accounts = mongoose.model('Accounts',accountSchema);
 module.exports = {
-    User
+    Users,
+    Accounts
 };
