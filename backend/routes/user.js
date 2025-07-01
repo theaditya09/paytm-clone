@@ -1,10 +1,11 @@
 const {Router} = require('express')
 const router = Router()
-const {signUpBody, signInBody} = require('../types')
+const {signUpBody, signInBody, updateBody} = require('../types')
 const {Users} = require('../database/index')
 const jwt = require('jsonwebtoken')
 require('dotenv').config();
 const secret = process.env.JWT_SECRET
+const {authMiddleware} = require('../middlewares/middleware')
 
 router.post('/signup', async (req, res) => {
     const {success} = signUpBody.safeParse(req.body);
@@ -72,9 +73,22 @@ router.post('/signin', async (req, res) => {
             msg : "Invalid Credentials."
         })
     }
-
 })
 
 
+router.put('/update', authMiddleware, async (req, res) => {
+    const { success } = updateBody.safeParse(req.body)
+    if (!success) {
+        res.status(411).json({
+            message: "Error while updating information"
+        })
+    }
+
+	await Users.updateOne({ _id: req.userId }, req.body);
+	
+    res.json({
+        message: "Updated successfully"
+    })
+})
 
 module.exports = router
