@@ -6,7 +6,7 @@ import { SubHeading } from "../components/SubHeading";
 export function SignIn(){
     return(
         <>
-        <div className="bg-slate-400 h-screen flex justify-center items-center">
+        <div className="bg-slate-300 h-screen flex justify-center items-center">
             <div className="bg-white w-max h-max text-center rounded-lg">
                 <Heading label="Sign In"/>
                 <SubHeading label="Enter your credentials to access your account" />

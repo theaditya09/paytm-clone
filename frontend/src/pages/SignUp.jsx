@@ -7,7 +7,7 @@ import { SubHeading } from "../components/SubHeading";
 export function SignUp(){
     return(
         <>
-        <div className="bg-slate-400 h-screen flex justify-center items-center">
+        <div className="bg-slate-300 h-screen flex justify-center items-center">
             <div className="bg-white w-max h-max text-center rounded-lg">
                 <Heading label="Sign Up"/>
                 <SubHeading label="Enter your information to create an account" />
