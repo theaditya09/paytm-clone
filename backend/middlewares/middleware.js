@@ -12,8 +12,10 @@ function authMiddleware(req, res, next){
     const token = authHeader.split(' ')[1]
 
     try{
-        const {userId} = jwt.verify(token, secret)
+        const {userId, firstName, lastName} = jwt.verify(token, secret)
         req.userId = userId
+        req.firstName = firstName
+        req.lastName = lastName
         next();
     }
     catch(err){

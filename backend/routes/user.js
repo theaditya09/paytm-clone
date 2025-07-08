@@ -39,10 +39,10 @@ router.post('/signup', async (req, res) => {
     })
 
     const token = jwt.sign({
-        userId
+        userId,
+        firstName : user.firstName,
+        lastName : user.lastName
     }, secret);
-
-
 
     res.status(200).json({
         msg : "User created succesfully",
@@ -68,8 +68,12 @@ router.post('/signin', async (req, res) => {
 
     if(userExists){
         const userId = userExists._id
+        const firstName = userExists.firstName
+        const lastName = userExists.lastName
         const token = jwt.sign({
-            userId
+            userId,
+            firstName,
+            lastName
         }, secret)
         res.status(200).json({
             token : token
@@ -82,6 +86,13 @@ router.post('/signin', async (req, res) => {
     }
 })
 
+router.get('/me', authMiddleware, (req, res) => {
+    res.json({
+        _id : req.userId,
+        firstName : req.firstName,
+        lastName : req.lastName
+    })
+})
 
 router.put('/update', authMiddleware, async (req, res) => {
     const { success } = updateBody.safeParse(req.body)
