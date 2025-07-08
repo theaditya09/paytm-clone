@@ -5,13 +5,16 @@ import { Heading } from "../components/Heading";
 import { InputBox } from "../components/InputBox";
 import { SubHeading } from "../components/SubHeading";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function SignUp(){
 
+    const navigate = useNavigate();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState(false);
 
     return(
         <>
@@ -32,14 +35,25 @@ export function SignUp(){
                     setPassword(e.target.value)
                 }} label="Password" placeholder="******"/>
                 <Button onClick={async () => {
-                    const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
-                        username : email,
-                        password,
-                        firstName,
-                        lastName
-                    })
-                    localStorage.setItem("token",response.data.token)
+                    try{
+                        const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
+                            username : email,
+                            password,
+                            firstName,
+                            lastName
+                        })
+                        localStorage.setItem("token",response.data.token)
+                        navigate('/dashboard')
+                    }
+                    catch(err){
+                        if(err.response){
+                            setError(true);
+                        }
+                    }
                 }} label="Sign Up"/>
+                {
+                    error ? <div className="text-sm text-red-500">Signup error, please try again</div> : null
+                }
                 <BottomWarning label="Already have an account?" buttonText="Sign In" to="/signin"/>
             </div>
         </div>
