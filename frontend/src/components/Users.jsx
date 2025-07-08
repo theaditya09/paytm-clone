@@ -1,13 +1,27 @@
 import { User } from "./User"
 import { useEffect, useState } from "react"
+import axios from "axios"
+import { useAsyncError } from "react-router-dom"
 
 export function Users(){
 
     const [search, setSearch] = useState("")
-    let users = ["aditya", "aditya2", "adigen", "mohan", "rahul"]
-    let filteredUsers = []
+    const [users,setUsers] = useState([])
+    const [debouncedSearch, setDebouncedSearch] = useState(search)
 
-    filteredUsers = users.filter(user => user.includes(search))
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 300)
+        return () => clearTimeout(timer)
+    }, [search])
+
+    useEffect(() => {
+        axios.get("http://localhost:3000/api/v1/user/bulk?filter="+search)
+        .then(function(response){
+            setUsers(response.data.users)
+        })
+    }, [debouncedSearch])
 
     return <div>
         <div className="p-4 font-bold text-lg">
@@ -19,7 +33,7 @@ export function Users(){
                 setSearch(e.target.value)
             }}/>
             {
-                filteredUsers.map(user => <User name={user}/>)
+                users.map(user => <User user={user}/>)
             }
         </div>
     </div>
