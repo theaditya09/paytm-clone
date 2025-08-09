@@ -4,10 +4,13 @@ import { SignIn } from './pages/SignIn'
 import { SignUp } from './pages/SignUp'
 import { Dashboard } from './pages/Dashboard'
 import { SendMoney } from './pages/SendMoney'
+import SplashCursor from './components/SplashCursor'
 
 function App() {
   return (
     <>
+      <div className="aurora-bg" aria-hidden="true" />
+      <SplashCursor />
       <BrowserRouter>
         <Routes>
           <Route path="/signup" element={<SignUp />} />

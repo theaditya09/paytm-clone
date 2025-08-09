@@ -16,14 +16,14 @@ export function SignIn(){
 
     return(
         <>
-        <div className="bg-slate-300 h-screen flex justify-center items-center">
-            <div className="bg-white w-max h-max text-center rounded-lg">
+        <div className="min-h-screen flex justify-center items-center px-4">
+            <div className="glass-card w-full max-w-md text-center rounded-2xl animate-fade-in-up glass-field">
                 <Heading label="Sign In"/>
                 <SubHeading label="Enter your credentials to access your account" />
-                <InputBox label="Email" placeholder="johndoe@example.com" onChange={(e) => {
+                <InputBox type="email" label="Email" placeholder="johndoe@example.com" onChange={(e) => {
                     setUsername(e.target.value)
                 }}/>
-                <InputBox label="Password" placeholder="******" onChange={(e) => {
+                <InputBox type="password" label="Password" placeholder="******" onChange={(e) => {
                     setPassword(e.target.value)
                 }}/>
                 <Button label="Sign In" onClick={async () => {
@@ -40,9 +40,9 @@ export function SignIn(){
                             setSigninError(true)
                         }
                     }
-                }}/>
+                }} />
                 {
-                    signinError ? <div className="text-sm text-red-500">Signin error, please try again</div> : null
+                    signinError ? <div className="text-sm text-red-400 animate-fade-in-up">Signin error, please try again</div> : null
                 }
                 <BottomWarning label="Don't have an account?" buttonText="Sign Up" to="/signup"/>
             </div>

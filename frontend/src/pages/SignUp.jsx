@@ -18,8 +18,8 @@ export function SignUp(){
 
     return(
         <>
-        <div className="bg-slate-300 h-screen flex justify-center items-center">
-            <div className="bg-white w-max h-max text-center rounded-lg">
+        <div className="min-h-screen flex justify-center items-center px-4">
+            <div className="glass-card w-full max-w-md text-center rounded-2xl animate-fade-in-up glass-field">
                 <Heading label="Sign Up"/>
                 <SubHeading label="Enter your information to create an account" />
                 <InputBox onChange={(e) => {
@@ -28,10 +28,10 @@ export function SignUp(){
                 <InputBox onChange={(e) => {
                     setLastName(e.target.value)
                 }} label="Last Name" placeholder="Doe"/>
-                <InputBox onChange={(e) => {
+                <InputBox type="email" onChange={(e) => {
                     setEmail(e.target.value)
                 }} label="Email" placeholder="johndoe@example.com"/>
-                <InputBox onChange={(e) => {
+                <InputBox type="password" onChange={(e) => {
                     setPassword(e.target.value)
                 }} label="Password" placeholder="******"/>
                 <Button onClick={async () => {
@@ -50,10 +50,8 @@ export function SignUp(){
                             setError(true);
                         }
                     }
-                }} label="Sign Up"/>
-                {
-                    error ? <div className="text-sm text-red-500">Signup error, please try again</div> : null
-                }
+                }} label="Sign Up" />
+                { error ? <div className="text-sm text-red-400 animate-fade-in-up">Signup error, please try again</div> : null }
                 <BottomWarning label="Already have an account?" buttonText="Sign In" to="/signin"/>
             </div>
         </div>

@@ -43,9 +43,10 @@ export function Dashboard() {
         fetchBalance();
     }, [location.state]); 
 
+    const displayName = [user.firstName, user.lastName].filter(Boolean).join(' ')
     return (
         <>
-            <Appbar name={user.firstName + " " + user.lastName} />
+            <Appbar name={displayName} />
             <Balance amount={amount} />
             <Users />
         </>
